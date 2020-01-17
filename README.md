@@ -1,0 +1,3 @@
+# Testing
+
+- `docker-compose up`

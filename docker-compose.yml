@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  api:
+    container_name: sage-hiring-api
+    build: ./sage-hiring-api
+    ports:
+      - 5080:5080
+    depends_on: 
+      - database
+    environment: 
+      - ConnectionStrings__DefaultConnection=Host=database;Port=5432;Username=root;Password=password;Database=sage;
+  database:
+    container_name: sage-hiring-db
+    image: postgres:12.1
+    environment:
+      POSTGRES_DB: sage
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+    ports:
+      - 5432:5432
