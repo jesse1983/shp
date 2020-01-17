@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using NpgsqlTypes;
 
 namespace sage_hiring_api.Models
 {

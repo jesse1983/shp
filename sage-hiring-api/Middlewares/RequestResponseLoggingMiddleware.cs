@@ -1,7 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using System.IO;
-using System.Text;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 
