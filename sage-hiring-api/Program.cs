@@ -15,10 +15,6 @@ namespace sage_hiring_api
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseKestrel(options => {
-                      options.Listen(IPAddress.Loopback, 5080);
-                      options.Listen(IPAddress.Loopback, 5443);
-                    });
                     webBuilder.UseStartup<Startup>();
                 });
     }

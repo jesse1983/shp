@@ -1,6 +1,6 @@
 # Testing
 
-- `docker-compose up`
+- `docker-compose up -d`
 
 Address: http://localhost:5080
 
