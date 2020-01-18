@@ -11,28 +11,27 @@ namespace sage_hiring_api.Controllers {
 
     [ApiController]
     [Route("[controller]")]
-    public class CustomersController : ControllerBase 
+    public class CustomersController : ControllerBase
     {
         private readonly SageContext _db;
 
-        public CustomersController(SageContext context) 
+        public CustomersController(SageContext context)
         {
             _db = context;
         }
 
         // GET customers
         [HttpGet]
-        public IActionResult Get (string offset = "0", string limit = "10")
+        public IActionResult Get (int offset = 0, int limit = 10)
         {
-            int _limit = int.Parse(limit);
 
             List<Customer> customers = _db.Customers
-                .Skip(int.Parse(offset))
-                .Take(_limit > 10 ? 10 : _limit)
+                .Skip(offset)
+                .Take(limit > 10 ? 10 : limit)
                 .OrderBy(c => c.CustomerId)
                 .ToList();
             Envelope<Customer> result = new Envelope<Customer>();
-            if (customers != null && customers.Count > 0) 
+            if (customers != null && customers.Count > 0)
             {
                 result.data = customers;
                 result.count = customers.Count;
@@ -42,10 +41,10 @@ namespace sage_hiring_api.Controllers {
 
         // GET customers/:id
         [HttpGet ("{customerId}")]
-        public IActionResult Get (string customerId)
+        public IActionResult Get (int customerId)
         {
-            Customer customer = _db.Customers.FirstOrDefault(c => c.CustomerId == int.Parse(customerId));
-            if (customer == null) return NotFound((Message: customerId + " is not found", Title: "Not found"));
+            Customer customer = _db.Customers.FirstOrDefault(c => c.CustomerId == customerId);
+            if (customer == null) return NotFound((Message: string.Format("{0} is not found"), Title: "Not found"));
             return Ok(customer);
         }
 
@@ -54,16 +53,16 @@ namespace sage_hiring_api.Controllers {
         public IActionResult Post ([FromBody] Customer customer)
         {
             _db.Customers.Add(customer);
-            try 
+            try
             {
                 _db.SaveChanges();
                 return Ok(customer);
-            } 
-            catch (Exception e) 
+            }
+            catch (Exception e)
             {
                 return BadRequest((e.Message, Title: "Bad Request"));
             }
-        }    
+        }
 
         // PUT customers/:id
         [HttpPut ("{customerId}")]
@@ -72,12 +71,12 @@ namespace sage_hiring_api.Controllers {
             customer.CustomerId = int.Parse(customerId);
             _db.Entry(customer).State = EntityState.Modified;
 
-            try 
+            try
             {
                 _db.SaveChanges();
                 return Ok(customer);
-            } 
-            catch (Exception e) 
+            }
+            catch (Exception e)
             {
                 return BadRequest ((e.Message, Title: "Bad Request"));
             }
@@ -85,22 +84,22 @@ namespace sage_hiring_api.Controllers {
 
         // Delete customers/:id
         [HttpDelete ("{customerId}")]
-        public IActionResult Delete (string customerId)
+        public IActionResult Delete (int customerId)
         {
-            Customer customer = _db.Customers.FirstOrDefault(c => c.CustomerId == int.Parse(customerId));
+            Customer customer = _db.Customers.FirstOrDefault(c => c.CustomerId == customerId);
             if (customer == null) {
-                return NotFound((Message: customerId + " is not found", Title: "Not found"));
+                return NotFound((Message: string.Format("{0} is not found"), Title: "Not found"));
             }
             _db.Entry(customer).State = EntityState.Deleted;
-            try 
+            try
             {
                 _db.SaveChanges();
                 return NoContent();
-            } 
-            catch (Exception e) 
+            }
+            catch (Exception e)
             {
                 return BadRequest ((e.Message, Title: "Bad Request"));
             }
-        }         
+        }
     }
 }

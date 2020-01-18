@@ -1,0 +1,19 @@
+.main
+    .main-form
+        position: fixed
+        width: calc(33vw - 1.5em)
+        height: 100vh
+        top: 0
+        right: 0
+        background: #FFF
+        margin-right: -33vw
+        transition: 250ms all ease
+        padding: 1.5em
+        overflow-y: auto
+    &.edit
+        .main-form
+            margin-right: 0
+            box-shadow: 0 0 20px rgba(0,0,0,0.3)
+            border-left: 1px solid #CCC
+
+

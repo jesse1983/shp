@@ -1,0 +1,16 @@
+.form-component
+    .form-add
+        overflow: hidden
+        &.step-0 .form-step-container
+            margin-left: 0;
+        &.step-1 .form-step-container
+            margin-left: -100%
+        .form-step-container
+            width: 200%
+            display: grid
+            grid-template-columns: 1fr 1fr
+            transition: 250ms margin-left ease-in-out
+            .form-step-box
+                width: 100%
+
+

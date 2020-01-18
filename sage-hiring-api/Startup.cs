@@ -27,7 +27,7 @@ namespace sage_hiring_api
             });
             services.AddControllers();
             services.AddDbContext<SageContext> (options =>
-                options.UseNpgsql (Configuration.GetConnectionString ("DefaultConnection")));            
+                options.UseNpgsql (Configuration.GetConnectionString ("DefaultConnection")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,10 +41,12 @@ namespace sage_hiring_api
             {
                 app.UseExceptionHandler("/error");
             }
-            
+
             app.UseMiddleware<RequestResponseLoggingMiddleware>();
 
             app.UseRouting();
+
+            app.UseCors(option => option.AllowAnyOrigin());
 
             app.UseAuthorization();
 
@@ -52,7 +54,7 @@ namespace sage_hiring_api
             {
                 endpoints.MapControllers();
             });
-  
+
 
             UpdateDatabase(app);
         }
@@ -68,6 +70,6 @@ namespace sage_hiring_api
                     context.Database.Migrate();
                 }
             }
-        }        
+        }
     }
 }
