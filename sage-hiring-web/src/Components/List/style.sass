@@ -1,8 +1,25 @@
 .list-component
+    display: flex
+    flex-direction: column
+    &.count-0
+        align-items: center
+        justify-content: center
+        height: 100%
     .list-grid-cards
         display: grid
         grid-template-columns: 1fr 1fr 1fr 1fr
         grid-gap: 2em
-    .add-new-customer
+    .list-options-bar
         text-align: center
         padding: 2em 0
+        display: flex
+        justify-content: space-between
+        align-items: center
+        align-content: center
+        .list-options-bar-pagination
+            display: flex
+            align-items: center
+            align-content: center
+            p
+                padding: 0 2em
+

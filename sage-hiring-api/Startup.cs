@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -46,7 +47,11 @@ namespace sage_hiring_api
 
             app.UseRouting();
 
-            app.UseCors(option => option.AllowAnyOrigin());
+            app.UseCors(option => option
+                .WithOrigins(Environment.GetEnvironmentVariable("AllowOrigins"))
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+            );
 
             app.UseAuthorization();
 

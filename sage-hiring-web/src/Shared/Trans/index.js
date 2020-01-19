@@ -8,11 +8,11 @@ i18next
     .use(initReactI18next)
     .init({
         resources: {
-            'ptBr': {
+            'pt-BR': {
                 translation: ptBr,
             }
         },
-        lng: 'ptBr',
+        lng: 'pt-BR',
         fallbackLng: 'en',
         interpolation: {
             escapeValue: false
@@ -21,5 +21,5 @@ i18next
 
 export const t = (...props) => i18next.t(...props);
 export default props => {
-    return <Trans i18nKey={props.i18nKey} count={props.count} />;
+    return <Trans i18nKey={props.i18nKey} count={props.count} values={props.values} />;
 };

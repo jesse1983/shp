@@ -9,8 +9,25 @@ export const getCustomers = async (offset = 0) => {
     return result.data;
 };
 
-export const createCustomer = async (data) => {
-    await customerSchema(data);
-    const result = await axios.post(`${API_URL}/customers`, { data });
+export const getCustomer = async (id) => {
+    const result = await axios.get(`${API_URL}/customers/${id}`);
     return result.data;
 };
+
+export const createCustomer = async (data) => {
+    await customerSchema.validate(data);
+    const result = await axios.post(`${API_URL}/customers`, data);
+    return result.data;
+};
+
+export const updateCustomer = async (data) => {
+    await customerSchema.validate(data);
+    const result = await axios.put(`${API_URL}/customers/${data.customerId}`, data);
+    return result.data;
+};
+
+export const destroyCustomer = async (id) => {
+    await axios.delete(`${API_URL}/customers/${id}`);
+    return true;
+};
+

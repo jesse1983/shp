@@ -2,14 +2,19 @@
 import React, { useState, useEffect } from  'react';
 import { set } from 'lodash';
 import {
+    Container,
     TextField,
     Box,
     Avatar,
     Button
 } from '@material-ui/core';
+import { CheckBox, Close } from '@material-ui/icons';
 import { useStore } from '../../Stores';
 import CustomerSchema from '../../Schemas/CustomerSchema';
 import { t } from '../../Shared/Trans';
+import { createCustomer } from '../../Services/Customers';
+import { createAddress } from '../../Services/Addresses';
+import { ADDRESS_FIELDS } from '../../constants';
 import './style.sass';
 
 
@@ -25,15 +30,30 @@ export default () => {
         customer = customer || {};
         set(customer, id, value);
         dispatch({ type: 'CHANGE_CUSTOMER', value: customer });
+        const validation = validateCustomer();
+        setError(validation.error);
     }
 
-    const submitForm = (ev) => {
+    const close = () => {
+        dispatch({ type: 'SWITCH_VIEW', value: 'list' });
+        setStep(0);
+        setError(null);
+    }
+
+    const submitForm = async (ev) => {
         ev.preventDefault();
         if (step === 0 && state.customer && state.customer.firstName && state.customer.lastName) {
             setStep(1);
         }
         if (step === 1 && !validateCustomer().error) {
-
+            const { customer } = state;
+            const { addresses, ...clean } = customer;
+            const saved = await createCustomer(clean);
+            await addresses.map(async (address) => createAddress(saved.customerId, address));
+            setStep(2);
+            setTimeout(() => {
+                close();
+            }, 3000);
         }
     }
 
@@ -49,54 +69,48 @@ export default () => {
         const validation = validateCustomer();
         setError(validation.error);
     }, [state]);
-    
+
     const validateCustomer = () => CustomerSchema.validate(state.customer || {}, { abortEarly: false });
 
-    const addressFields = [
-        { field: 'title', label: t('Address title'), placeholder: t('For example, Home') },
-        { field: 'street', label: t('Street') },
-        { field: 'streetNumber', label: t('Street number') },
-        { field: 'additional', label: t('Additional address') },
-        { field: 'district', label: t('District') },
-        { field: 'city', label: t('City') },
-        { field: 'state', label: t('State') },
-        { field: 'country', label: t('Country') },
-    ];
-    return <div className="form-component">
-        <button onClick={() => dispatch({ type: 'SWITCH_VIEW' })}>Add</button>
-        <div>{JSON.stringify({ c: state.customer, s: step }, null, 4)}</div>
-        {state.mode === 'edit' &&
-            <form onSubmit={submitForm} className={`form-add step-${step}`}>
-                <Box>
-                    <Avatar />
-                </Box>
-                <div className="form-step-container">
-                    <div className="form-step-box form-step-0">
-                        <Box>
-                            <TextField onInput={inputField} helperText={errorMessage('firstName')} error={!!errorMessage('firstName')} id="firstName" label={t('First name')} variant="filled" fullWidth />
-                        </Box>
-                        <Box>
-                            <TextField onInput={inputField} helperText={errorMessage('lastName')} error={!!errorMessage('lastName')} id="lastName" label={t('Last name')} variant="filled" fullWidth />
-                        </Box>
-                        <Box>
-                            <TextField onInput={inputField} helperText={errorMessage('additional')} error={!!errorMessage('additional')} id="additional" label={t('Additional')} variant="filled" fullWidth multiline rowsMax={4} />
-                        </Box>
+    return <Container maxWidth="lg" className="form-component">
+        <Box className="box-close">
+            <Close onClick={close} />
+        </Box>
+        <form onSubmit={submitForm} className={`form-add step-${step}`}>
+            <Box className="box-avatar">
+                <Avatar />
+            </Box>
+            <div className="form-step-container">
+                <div className="form-step-box form-step-0">
+                    <Box>
+                        <TextField onInput={inputField} error={!!errorMessage('firstName')} id="firstName" label={t('First name')} variant="outlined" fullWidth />
+                    </Box>
+                    <Box>
+                        <TextField onInput={inputField} error={!!errorMessage('lastName')} id="lastName" label={t('Last name')} variant="outlined" fullWidth />
+                    </Box>
+                    <Box>
+                        <TextField onInput={inputField} error={!!errorMessage('additional')} id="additional" label={t('Additional')} variant="outlined" fullWidth multiline rowsMax={4} />
+                    </Box>
 
-                        <Box>
-                            <Button type="submit" disabled={!!(errorMessage('firstName') && errorMessage('lastName'))} color="primary">{t('Next')}</Button>
-                        </Box>
-                    </div>
-                    <div className="form-step-box form-step-1">
-                        {addressFields.map((e, i) => <Box>
-                            <TextField onInput={inputField} helperText={errorMessage(e.field)} error={!!errorMessage(e.field)} id={`addresses[0].${e.field}`} label={e.label} variant="filled" fullWidth placeholder={e.placeholder} />
-                        </Box>)}
-                        <Box>
-                            <Button onClick={() => { setStep(0); console.log(step); }} >{t('Back')}</Button>
-                            <Button type="submit" color="primary" disabled={!!validateCustomer().error}>{t('Done')}</Button>
-                        </Box>
-                    </div>
+                    <Box>
+                        <Button type="submit" disabled={!!(errorMessage('firstName') || errorMessage('lastName'))} color="primary">{t('Next')}</Button>
+                    </Box>
                 </div>
-            </form>
-        }
-    </div>;
+                <div className="form-step-box form-step-1">
+                    {ADDRESS_FIELDS.map((e, i) => <Box key={i}>
+                        <TextField onInput={inputField} error={!!errorMessage(e.field)} id={`addresses[0].${e.field}`} label={e.label} variant="outlined" fullWidth placeholder={e.placeholder} />
+                    </Box>)}
+                    <Box>
+                        <Button onClick={() => { setStep(0); console.log(step); }} >{t('Back')}</Button>
+                        <Button type="submit" color="primary" disabled={!!validateCustomer().error}>{t('Done')}</Button>
+                    </Box>
+                </div>
+                <div className="form-step-box form-step-2">
+                    <Box>
+                        <CheckBox fontSize="large" />
+                    </Box>
+                </div>
+            </div>
+        </form>
+    </Container>;
 }

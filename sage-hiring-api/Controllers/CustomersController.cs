@@ -22,19 +22,20 @@ namespace sage_hiring_api.Controllers {
 
         // GET customers
         [HttpGet]
-        public IActionResult Get (int offset = 0, int limit = 10)
+        public IActionResult Get (int offset = 0, int limit = 12)
         {
 
             List<Customer> customers = _db.Customers
                 .Skip(offset)
-                .Take(limit > 10 ? 10 : limit)
+                .Take(limit > 120 ? 12 : limit)
                 .OrderBy(c => c.CustomerId)
                 .ToList();
+            int count = _db.Customers.Count();
             Envelope<Customer> result = new Envelope<Customer>();
-            if (customers != null && customers.Count > 0)
+            if (customers != null && count > 0)
             {
                 result.data = customers;
-                result.count = customers.Count;
+                result.count = count;
             }
             return Ok(result);
         }

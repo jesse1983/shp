@@ -12,7 +12,7 @@ export const getAddresses = async (cId, offset = 0) => {
 
 export const createAddress = async (cId, data) => {
     data.customerId = cId;
-    await addressSchema(data);
-    const result = await axios.post(aURL(cId), { data });
+    await addressSchema.validate(data);
+    const result = await axios.post(aURL(cId), data);
     return result.data;
 };

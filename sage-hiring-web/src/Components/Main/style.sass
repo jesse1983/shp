@@ -1,19 +1,49 @@
 .main
+    height: 100%
+    width: 100%
+    display: flex
+    flex-direction: row
+    align-items: stretch
+    overflow: hidden
+    > div
+        transition: 250ms width ease
+        height: 100%
+    .main-list
+        width: 67vw
+        pointer-events: none;
+        opacity: 0.5
+        overflow: auto
     .main-form
-        position: fixed
-        width: calc(33vw - 1.5em)
-        height: 100vh
-        top: 0
-        right: 0
         background: #FFF
-        margin-right: -33vw
-        transition: 250ms all ease
-        padding: 1.5em
         overflow-y: auto
-    &.edit
+        box-shadow: 0 0 20px rgba(0,0,0,0.3)
+        border-left: 1px solid #CCC
+        width: 33vw
+
+        .MuiBox-root, .MuiDivider-root
+            margin: 0 0 1.5em 0
+            text-align: center
+        .MuiAvatar-root
+            text-align: center
+        .box-avatar
+            display: flex
+            justify-content: center
+        .box-close
+            text-align: right
+            * 
+                font-size: 3em
+                font-weight: 100
+                cursor: pointer
+            
+
+    &.list
+        .main-list
+            width: 100vw
+            pointer-events: auto;
+            opacity: 1
         .main-form
-            margin-right: 0
-            box-shadow: 0 0 20px rgba(0,0,0,0.3)
-            border-left: 1px solid #CCC
+            box-shadow: none
+            width: 0vw
+
 
 

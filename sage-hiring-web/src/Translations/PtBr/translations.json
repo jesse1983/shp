@@ -1,13 +1,21 @@
 {
-    "First name": "Nome",
-    "Last name": "Sobrenome",
-    "Edit": "Editar",
     "Add new customer": "Adicionar novo cliente",
-    "Next": "Próximo",
     "Additional": "Observações",
-    "Back": "Voltar",
-    "Done": "Concluir",
+    "Additional address": "Complemento",
     "Address title": "Título do endereço",
+    "Back": "Voltar",
+    "Cancel": "Cancelar",
+    "Delete": "Apagar",
+    "Do you want delete it?": "Gostaria de apagar esse cliente?",
+    "Done": "Concluir",
+    "Edit": "Editar",
+    "First name": "Nome",
     "For example, Home": "Ex: Casa",
-    "Additional address": "Complemento"
+    "Last name": "Sobrenome",
+    "Next": "Próximo",
+    "Save": "Salvar",
+    "This action is irreversible": "Cuidado, essa ação é irreversível",
+    "current to total": "{{currentPage}} de {{totalPages}}",
+    "total customers": "Total: {{count}} cliente",
+    "total customers_plural": "Total: {{count}} clientes"
 }

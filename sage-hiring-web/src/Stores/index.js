@@ -1,9 +1,12 @@
 import React, { createContext, useReducer, useContext } from 'react';
 
 const defaultState = {
-  mode: 'view',
+  mode: 'list',
   customers: [],
   customer: null,
+  requestCustomers: true,
+  offset: 0,
+  rowPerPage: 12,
   countCustomers: 0,
   loading: false,
 };
@@ -11,15 +14,22 @@ const defaultState = {
 const reducer = (state = defaultState, action = {}) => {
     switch (action.type) {
         case 'SWITCH_VIEW':
-            const mode = state.mode === 'view' ? 'edit' : 'view';
-            const customer = mode === 'view' ? null : { addresses: [{}] };
-            return { ...state, mode , customer };
-        case 'SWITCH_LOAD':
-            return { ...state, loading: !state.loading };
+            const mode = action.value || 'list';
+            const customer = mode === 'list' ? null : { addresses: [{}] };
+            const requestCustomers = mode === 'list';
+            return { ...state, mode, customer, requestCustomers };
+        case 'REQUEST_CUSTOMERS':
+            return { ...state, requestCustomers: true };
         case 'FETCH_CUSTOMERS':
-            return { ...state, customers: action.data, countCustomers: action.count || 0, loading: false,  };
-        case 'CHANGE_CUSTOMER':
-                return { ...state, customer: action.value };
+            return { ...state, customers: action.data, countCustomers: action.count || 0, requestCustomers: false,  };
+        case 'NEXT_PAGE':
+            const nOffset = state.offset + state.rowPerPage;
+            return { ...state, offset: nOffset < state.countCustomers ? nOffset : state.countCustomers - 1, requestCustomers: true };
+        case 'PREV_PAGE':
+            const pOffset = state.offset - state.rowPerPage;
+            return { ...state, offset: pOffset > 0 ? pOffset : 0, requestCustomers: true };
+        case 'FETCH_CUSTOMER':
+            return { ...state, customer: action.value, mode: 'view' };
         default:
             return state;
     }
