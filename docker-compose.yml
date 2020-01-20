@@ -11,15 +11,15 @@ services:
     environment: 
       - ConnectionStrings__DefaultConnection=Host=database;Port=5432;Username=root;Password=password;Database=sage;
       - AllowOrigins=http://localhost:3000
-  # web:
-  #   container_name: sage-hiring-web
-  #   build: ./sage-hiring-web
-  #   ports:
-  #     - 3000:3000
-  #   depends_on: 
-  #     - api
-  #   environment: 
-  #     - API_URL=http://localhost:5000     
+  web:
+    container_name: sage-hiring-web
+    build: ./sage-hiring-web
+    ports:
+      - 3000:3000
+    depends_on: 
+      - api
+    environment: 
+      - API_URL=http://localhost:5000     
   database:
     container_name: sage-hiring-db
     image: postgres:12.1
