@@ -16,7 +16,8 @@ Api: [http://localhost:5000](http://localhost:5000)
 - Unit tests
 - Integration tests
 - Authentication and Authorization
-- Full Text Searches
+- Full Text Searches using ElasticSearch
 - Motions
+- Google Places integration
 - Add new addresses for customers
 - Loadings
