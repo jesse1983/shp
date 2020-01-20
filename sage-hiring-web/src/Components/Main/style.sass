@@ -1,3 +1,7 @@
+@mixin for-phone-only
+  @media (max-width: 599px)
+    @content;
+
 .main
     height: 100%
     width: 100%
@@ -10,6 +14,8 @@
         height: 100%
     .main-list
         width: 67vw
+        @include for-phone-only
+          width: 1vw
         pointer-events: none;
         opacity: 0.5
         overflow: auto
@@ -19,7 +25,8 @@
         box-shadow: 0 0 20px rgba(0,0,0,0.3)
         border-left: 1px solid #CCC
         width: 33vw
-
+        @include for-phone-only
+          width: 99vw
         .MuiBox-root, .MuiDivider-root
             margin: 0 0 1.5em 0
             text-align: center
@@ -30,11 +37,11 @@
             justify-content: center
         .box-close
             text-align: right
-            * 
+            *
                 font-size: 3em
                 font-weight: 100
                 cursor: pointer
-            
+
 
     &.list
         .main-list

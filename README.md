@@ -11,4 +11,12 @@ Api: [http://localhost:5000](http://localhost:5000)
 - /customers
 - /customers/:id/addresses
 
-## ToDo
+## To Do
+
+- Unit tests
+- Integration tests
+- Authentication and Authorization
+- Full Text Searches
+- Motions
+- Add new addresses for customers
+- Loadings
